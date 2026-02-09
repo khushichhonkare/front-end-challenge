@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Slooze Commodities Management System Frontend
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This project implements the frontend solution for the Slooze Commodities Management System take-home challenge. It's built with Next.js (App Router), TypeScript, and Tailwind CSS, featuring user authentication with role-based access control (RBAC) and basic CRUD operations for product management.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Authentication**: Email and password login with client-side validation, mock API integration, session persistence using `localStorage`, and a global `AuthContext`.
+- **Role-Based Access Control (RBAC)**: 
+  - Two roles: `Manager` and `Store Keeper`.
+  - Protected routes and dynamic UI elements based on user role.
+  - Route guards prevent direct URL access to restricted areas.
+- **Dashboard (Manager Only)**: Displays mock statistics (product count, categories, inventory).
+- **View Products**: Accessible to both roles, displaying product data in a responsive table layout.
+- **Add / Edit Products**: 
+  - Reusable `ProductForm` component with client-side validation.
+  - Functionality to add new products and edit existing ones.
+  - Accessible only to `Manager` roles.
+- **UI/UX**: 
+  - Light/Dark mode toggle with persistence using `localStorage` and Tailwind CSS `dark` class strategy.
+  - Responsive admin-style interface.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Role Permissions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Feature            | Manager | Store Keeper |
+|--------------------|---------|--------------|
+| Login              | ✅      | ✅           |
+| Dashboard          | ✅      | ❌           |
+| View Products      | ✅      | ✅           |
+| Add/Edit Products  | ✅      | ❌           |
 
-## Learn More
+## Assumptions
 
-To learn more about Next.js, take a look at the following resources:
+- Backend APIs are entirely mocked using Next.js API routes (`/api`) or client-side services for data storage (e.g., `localStorage` or in-memory arrays).
+- JWTs are fake and for demonstration purposes only.
+- Data is stored in memory (`productService.ts`) or `localStorage` for persistence across browser sessions for authentication.
+- Tailwind CSS dark mode is configured to respond to the `dark` class on the `<html>` element.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Setup Instructions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To run the project locally, follow these steps:
 
-## Deploy on Vercel
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd front-end-challenge
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2.  **Install dependencies** (using `npm`):
+    ```bash
+    npm install
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open in browser**:
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Available Credentials for Testing:
+
+**Manager Account:**
+-   Email: `manager@slooze.com`
+-   Password: `password`
+
+**Store Keeper Account:**
+-   Email: `storekeeper@slooze.com`
+-   Password: `password`
