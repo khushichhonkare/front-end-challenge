@@ -4,13 +4,15 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +51,14 @@ export default function MainLayout({
               <a href="/products" className="text-blue-600 hover:underline dark:text-blue-400">
                 Products
               </a>
+            </li>
+            <li className="mb-2">
+              <button
+                onClick={toggleTheme}
+                className="w-full text-left text-gray-600 hover:underline dark:text-gray-300"
+              >
+                Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+              </button>
             </li>
             <li>
               <button

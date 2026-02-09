@@ -1,48 +1,43 @@
 // src/contexts/AuthContext.tsx
 'use client';
 
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from 'react';
-import { User, Role } from '@/types';
+import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { User, Role } from '../types'; // Assuming types are defined here
 
 interface AuthContextType {
   user: User | null;
+  isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  hasRole: (requiredRoles: Role[]) => boolean;
+  hasRole: (requiredRole: Role) => boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error('Failed to parse user from localStorage', error);
+      localStorage.removeItem('user'); // Clear corrupted data
+    } finally {
+      setLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    setIsLoading(true);
+  const login = useCallback(async (email: string, password: string) => {
     try {
-      // Mock API call
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -52,8 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+        throw new Error('Login failed');
       }
 
       const userData: User = await response.json();
@@ -65,8 +59,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
       localStorage.removeItem('user');
       return false;
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -75,20 +67,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('user');
   }, []);
 
-  const isAuthenticated = !!user;
+  const hasRole = useCallback((requiredRole: Role) => {
+    return user?.role === requiredRole;
+  }, [user]);
 
-  const hasRole = useCallback(
-    (requiredRoles: Role[]) => {
-      if (!user) return false;
-      return requiredRoles.includes(user.role);
-    },
-    [user]
-  );
+  if (loading) {
+    return null; // Or a loading spinner
+  }
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated, isLoading, hasRole }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, hasRole }}>
       {children}
     </AuthContext.Provider>
   );
