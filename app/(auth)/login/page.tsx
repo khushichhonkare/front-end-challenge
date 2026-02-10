@@ -9,7 +9,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login, isAuthenticated } = useAuth();
   const router = useRouter();
 
   if (isAuthenticated) {
@@ -26,11 +27,16 @@ export default function LoginPage() {
       return;
     }
 
-    const success = await login(email, password);
-    if (success) {
-      router.push('/dashboard');
-    } else {
-      setError('Login failed. Please check your credentials.');
+    setIsSubmitting(true);
+    try {
+      const success = await login(email, password);
+      if (success) {
+        router.push('/dashboard');
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -108,9 +114,9 @@ export default function LoginPage() {
             <button
               type="submit"
               className="mt-2 inline-flex w-full items-center justify-center rounded-[999px] bg-[#7c3aed] px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-[#7c3aed]/40 transition hover:bg-[#6d28d9] disabled:opacity-60"
-              disabled={isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading ? 'Logging in…' : 'Get Started'}
+              {isSubmitting ? 'Logging in…' : 'Get Started'}
             </button>
           </form>
 
