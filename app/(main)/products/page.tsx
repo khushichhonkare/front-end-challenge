@@ -181,7 +181,9 @@ export default function ProductsPage() {
                 {!loading &&
                   !error &&
                   products.map((product, index) => {
-                    const revenue = product.price * product.stock;
+                    const views = product.views ?? 14000;
+                    const revenue =
+                      product.revenue ?? product.price * product.stock;
                     return (
                       <tr
                         key={product.id}
@@ -214,7 +216,7 @@ export default function ProductsPage() {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-3 text-[var(--foreground)]">
-                          14,000
+                          {views.toLocaleString('en-US')}
                         </td>
                         <td className="whitespace-nowrap px-4 py-3 text-[var(--foreground)]">
                           ${product.price.toFixed(3)}

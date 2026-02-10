@@ -21,6 +21,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [category, setCategory] = useState(initialData?.category || '');
   const [price, setPrice] = useState(initialData?.price.toString() || '');
   const [stock, setStock] = useState(initialData?.stock.toString() || '');
+  const [description, setDescription] = useState(initialData?.description || '');
+  const [tagKeyword, setTagKeyword] = useState(initialData?.tagKeyword || '');
+  const [discount, setDiscount] = useState(
+    initialData?.discount !== undefined ? initialData.discount.toString() : '',
+  );
+  const [discountCategory, setDiscountCategory] = useState(
+    initialData?.discountCategory || '',
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -29,6 +37,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
       setCategory(initialData.category);
       setPrice(initialData.price.toString());
       setStock(initialData.stock.toString());
+      setDescription(initialData.description || '');
+      setTagKeyword(initialData.tagKeyword || '');
+      setDiscount(
+        initialData.discount !== undefined ? initialData.discount.toString() : '',
+      );
+      setDiscountCategory(initialData.discountCategory || '');
     }
   }, [initialData]);
 
@@ -42,6 +56,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
     if (!stock || isNaN(parseInt(stock)) || parseInt(stock) < 0) {
       newErrors.stock = 'Stock must be a non-negative integer.';
     }
+    if (discount && (isNaN(parseFloat(discount)) || parseFloat(discount) < 0 || parseFloat(discount) > 100)) {
+      newErrors.discount = 'Discount must be between 0 and 100.';
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -54,6 +71,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
         category,
         price: parseFloat(price),
         stock: parseInt(stock),
+        description: description || undefined,
+        tagKeyword: tagKeyword || undefined,
+        discount: discount ? parseFloat(discount) : undefined,
+        discountCategory: discountCategory || undefined,
       });
     }
   };
@@ -111,6 +132,44 @@ const ProductForm: React.FC<ProductFormProps> = ({
             )}
           </div>
         </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <label
+              htmlFor="description"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              className="w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 py-2 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              placeholder="Write a few sentences about the product."
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="tagKeyword"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Tag Keyword
+            </label>
+            <input
+              type="text"
+              id="tagKeyword"
+              value={tagKeyword}
+              onChange={(e) => setTagKeyword(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              placeholder="e.g. Electronics"
+              disabled={isSubmitting}
+            />
+          </div>
+        </div>
       </section>
 
       {/* Pricing section */}
@@ -121,7 +180,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           </p>
         </header>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-3">
           <div>
             <label
               htmlFor="price"
@@ -142,6 +201,49 @@ const ProductForm: React.FC<ProductFormProps> = ({
             )}
           </div>
 
+          <div>
+            <label
+              htmlFor="discount"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Discount (%)
+            </label>
+            <input
+              type="number"
+              id="discount"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              placeholder="e.g. 10"
+              disabled={isSubmitting}
+            />
+            {errors.discount && (
+              <p className="mt-1 text-xs text-[var(--danger)]">
+                {errors.discount}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="discountCategory"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Discount Category
+            </label>
+            <input
+              type="text"
+              id="discountCategory"
+              value={discountCategory}
+              onChange={(e) => setDiscountCategory(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              placeholder="e.g. Holiday"
+              disabled={isSubmitting}
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
           <div>
             <label
               htmlFor="stock"
