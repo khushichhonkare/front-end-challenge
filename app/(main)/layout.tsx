@@ -12,20 +12,20 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading, user, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isAuthenticated) {
       router.push('/login');
-    } else if (!isLoading && user?.role === 'Store Keeper' && window.location.pathname === '/dashboard') {
+    } else if (user?.role === 'Store Keeper' && pathname === '/dashboard') {
       router.push('/products');
     }
-  }, [isAuthenticated, isLoading, user, router]);
+  }, [isAuthenticated, user, pathname, router]);
 
-  if (isLoading || !isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center" style={{ background: 'var(--background)' }}>
         <p className="text-[var(--muted)]">Loading...</p>
