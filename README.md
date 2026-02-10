@@ -1,87 +1,71 @@
-![Logo](./public/FFFFFF-1.png)
-# Slooze take home challenge-front-end!!
+# Slooze Commodities Management System Frontend
 
-## Commodities Management Feature Flow
+## Overview
 
-We are introducing a **Commodities Management System** to **diversify product variety** and meet customer expectations. This feature includes a structured **role-based access system**, UI enhancements, and authentication mechanisms.
+This project implements the frontend solution for the Slooze Commodities Management System take-home challenge. It's built with Next.js (App Router), TypeScript, and Tailwind CSS, featuring user authentication with role-based access control (RBAC) and basic CRUD operations for product management.
 
----
+## Features
 
-## Feature Breakdown & Points Allocation
-### **1️⃣ Authentication & Access**
-- **Login (5 Points)** → Users authenticate via email & password.  
-- **Role-Based Access** → Only **Managers** can access the **dashboard**.  
+- **Authentication**: Email and password login with client-side validation, mock API integration, session persistence using `localStorage`, and a global `AuthContext`.
+- **Role-Based Access Control (RBAC)**: 
+  - Two roles: `Manager` and `Store Keeper`.
+  - Protected routes and dynamic UI elements based on user role.
+  - Route guards prevent direct URL access to restricted areas.
+- **Dashboard (Manager Only)**: Displays mock statistics (product count, categories, inventory).
+- **View Products**: Accessible to both roles, displaying product data in a responsive table layout.
+- **Add / Edit Products**: 
+  - Reusable `ProductForm` component with client-side validation.
+  - Functionality to add new products and edit existing ones.
+  - Accessible only to `Manager` roles.
+- **UI/UX**: 
+  - Light/Dark mode toggle with persistence using `localStorage` and Tailwind CSS `dark` class strategy.
+  - Responsive admin-style interface.
 
-### **2️⃣ Core UI Features**
-- **Dashboard (30 Points)** → Available **only for Managers** to oversee operations.  
-- **View All Products (10 Points)** → Accessible to both **Managers & Store Keepers**.  
-- **Add/Edit Products (15 Points) [Optional]** → Modify product inventory.  
+## Role Permissions
 
-### **3️⃣ UI Enhancements**
-- **Light/Dark Mode (15 Points)** → Implement theme switching.  
-- **Front-End Role-Based Menu Restrictions (Bonus: 25 Points)** → Restrict UI options dynamically.
+| Feature            | Manager | Store Keeper |
+|--------------------|---------|--------------|
+| Login              | ✅      | ✅           |
+| Dashboard          | ✅      | ❌           |
+| View Products      | ✅      | ✅           |
+| Add/Edit Products  | ✅      | ❌           |
 
-### Tech Stack:
-- **Backend**: NestJS · GraphQL · Prisma
-- **Frontend**: Next.js · TypeScript · Tailwind CSS · Apollo Client
-- **Auth**: Role-based access control (RBAC) · Bonus: Re-BAC
----
+## Assumptions
 
-## 🔒 Role-Based Access Rules
-| **Feature**           | **Manager** | **Store Keeper** |
-|----------------------|------------|----------------|
-| **Login**            | ✅          | ✅              |
-| **Dashboard**        | ✅          | ❌              |
-| **View Products**    | ✅          | ✅              |
-| **Add/Edit Products**| ✅          | ✅              |
-| **Role-Based UI**    | ✅          | ✅              |
+- Backend APIs are entirely mocked using Next.js API routes (`/api`) or client-side services for data storage (e.g., `localStorage` or in-memory arrays).
+- JWTs are fake and for demonstration purposes only.
+- Data is stored in memory (`productService.ts`) or `localStorage` for persistence across browser sessions for authentication.
+- Tailwind CSS dark mode is configured to respond to the `dark` class on the `<html>` element.
 
----
+## Setup Instructions
 
-## 🛠️ Implementation Steps
-### **A) Login Flow**
-1. Create a **login page** with validation.  
-2. Send API request → `POST /auth/login`.  
-3. Store **session details securely**.  
+To run the project locally, follow these steps:
 
-### **B) Dashboard Flow**
-1. Show **statistics & insights** for commodities.  
-2. Restrict access using **role-based gating**.  
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd front-end-challenge
+    ```
 
-### **C) Product Management**
-1. Fetch product data → `GET /products`.  
-2. Allow **adding/editing** via forms (`POST/PUT /products`).  
+2.  **Install dependencies** (using `npm`):
+    ```bash
+    npm install
+    ```
 
-### **D) UI Enhancements**
-1. Implement **Light/Dark Mode toggle** with localStorage.  
-2. **Role-based UI restrictions** for platform features.  
+3.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
 
----
+4.  **Open in browser**:
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🔥 Bonus Challenge: Role-Based Menu Restriction
-✅ Show/hide **menu items based on roles** (`Manager`, `Store Keeper`).  
-✅ Implement **router guards** to prevent unauthorized access.  
-✅ Ensure restricted buttons/options remain **disabled dynamically**.  
+### Available Credentials for Testing:
 
----
+**Manager Account:**
+-   Email: `manager@slooze.com`
+-   Password: `password`
 
-## Reference:
-
-- Refer to the [Figma](https://www.figma.com/design/uD9IW2pEx2JRB8xZJD11dx/Slooze-Take-Home-Challenge---Commodity?node-id=1-108&t=KAwt0LRM6NLVV3Qm-1) for more details on the problem statement
-- assume / affix sample data, components and other requirments you may have and state them out during your submission
-
-## 📤 Submission
-- Upload your code to GitHub or share as a CodeSandbox/StackBlitz link
-- Include instructions to run the app locally (e.g., npm install && npm run dev)
-- (Optional) Deploy and share a live link using Vercel, Netlify, etc.
-
-## Connect with Us:
-
-Reach out to **[careers@slooze.xyz](mailto:careers@slooze.xyz)** to submit your solutions or if you may have any questions related to the challenege
-
-## © Copyright Notice
-
-**© Slooze. All Rights Reserved.**
-
-Please do not share or distribute this material outside the intended evaluation process.  
-For queries, contact us !!
+**Store Keeper Account:**
+-   Email: `storekeeper@slooze.com`
+-   Password: `password`

@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* Use class-based dark mode so our theme toggle controls dark: variants */
+@custom-variant dark (&&:where(.dark, .dark *));
+
+:root {
+  /* Light theme – tuned to approximate the Figma light palette */
+  --background: #f4f5fb;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --muted-soft: #f3f4f6;
+  --primary: #6366f1; /* Indigo / purple accent like in the designs */
+  --primary-soft: #eef2ff;
+  --primary-hover: #4f46e5;
+  --primary-foreground: #ffffff;
+  --danger: #ef4444;
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
+  color-scheme: light;
+}
+
+.dark {
+  /* Dark theme – tuned to the Figma dark variants */
+  --background: #020617;
+  --foreground: #e5e7eb;
+  --card: #020617;
+  --card-elevated: #030712;
+  --card-foreground: #f9fafb;
+  --border: #1f2937;
+  --muted: #9ca3af;
+  --muted-soft: #020617;
+  --primary: #6366f1;
+  --primary-soft: #111827;
+  --primary-hover: #4f46e5;
+  --primary-foreground: #f9fafb;
+  --danger: #f97373;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* App shell helpers – used to keep spacing consistent with the Figma frames */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.app-shell-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 2rem;
+  gap: 1.5rem;
+}
+
+.app-page-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.app-subtle-surface {
+  background: var(--muted-soft);
+}
