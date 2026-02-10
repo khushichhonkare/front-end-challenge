@@ -59,105 +59,126 @@ const ProductForm: React.FC<ProductFormProps> = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800"
-    >
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          Product Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          disabled={isSubmitting}
-        />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-500">{errors.name}</p>
-        )}
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* General information section */}
+      <section className="space-y-4">
+        <header>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+            General Information
+          </p>
+        </header>
 
-      <div className="mb-4">
-        <label
-          htmlFor="category"
-          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          Category
-        </label>
-        <input
-          type="text"
-          id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          disabled={isSubmitting}
-        />
-        {errors.category && (
-          <p className="mt-1 text-sm text-red-500">{errors.category}</p>
-        )}
-      </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label
+              htmlFor="name"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              disabled={isSubmitting}
+            />
+            {errors.name && (
+              <p className="mt-1 text-xs text-[var(--danger)]">{errors.name}</p>
+            )}
+          </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="price"
-          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          Price
-        </label>
-        <input
-          type="number"
-          id="price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          disabled={isSubmitting}
-        />
-        {errors.price && (
-          <p className="mt-1 text-sm text-red-500">{errors.price}</p>
-        )}
-      </div>
+          <div>
+            <label
+              htmlFor="category"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Product Category
+            </label>
+            <input
+              type="text"
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              disabled={isSubmitting}
+            />
+            {errors.category && (
+              <p className="mt-1 text-xs text-[var(--danger)]">
+                {errors.category}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
-      <div className="mb-6">
-        <label
-          htmlFor="stock"
-          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          Stock
-        </label>
-        <input
-          type="number"
-          id="stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          disabled={isSubmitting}
-        />
-        {errors.stock && (
-          <p className="mt-1 text-sm text-red-500">{errors.stock}</p>
-        )}
-      </div>
+      {/* Pricing section */}
+      <section className="space-y-4">
+        <header>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+            Pricing
+          </p>
+        </header>
 
-      <div className="flex justify-end space-x-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label
+              htmlFor="price"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              disabled={isSubmitting}
+            />
+            {errors.price && (
+              <p className="mt-1 text-xs text-[var(--danger)]">{errors.price}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="stock"
+              className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[var(--muted)]"
+            >
+              Stock
+            </label>
+            <input
+              type="number"
+              id="stock"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              className="h-10 w-full rounded-[10px] border border-[var(--border)] bg-[var(--muted-soft)] px-3 text-sm text-[var(--foreground)] outline-none ring-0 placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:bg-[var(--card)]"
+              disabled={isSubmitting}
+            />
+            {errors.stock && (
+              <p className="mt-1 text-xs text-[var(--danger)]">{errors.stock}</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <div className="flex justify-end gap-3 border-t border-[var(--border)] pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+          className="rounded-[10px] border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--danger)] hover:bg-[var(--muted-soft)] disabled:opacity-60"
           disabled={isSubmitting}
         >
-          Cancel
+          Discard Change
         </button>
         <button
           type="submit"
-          className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50 dark:bg-blue-700 dark:hover:bg-blue-800"
+          className="rounded-[10px] bg-[var(--primary)] px-5 py-2 text-xs font-medium text-[var(--primary-foreground)] shadow-sm hover:bg-[var(--primary-hover)] disabled:opacity-60"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Saving...' : 'Save Product'}
+          {isSubmitting ? 'Saving…' : 'Save'}
         </button>
       </div>
     </form>

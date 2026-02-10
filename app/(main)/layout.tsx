@@ -2,7 +2,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 
@@ -14,6 +15,7 @@ export default function MainLayout({
   const { isAuthenticated, isLoading, user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -25,54 +27,95 @@ export default function MainLayout({
 
   if (isLoading || !isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <p className="text-gray-700 dark:text-gray-300">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center" style={{ background: 'var(--background)' }}>
+        <p className="text-[var(--muted)]">Loading...</p>
       </div>
     );
   }
 
+  const navLink = (href: string, label: string) => {
+    const isActive = pathname === href;
+    return (
+      <Link
+        href={href}
+        className={`flex items-center gap-2 rounded-[var(--radius)] px-3 py-2 text-sm font-medium transition-colors ${
+          isActive ? 'bg-[var(--primary-soft)] text-[var(--primary)]' : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Placeholder for Sidebar */}
-      <aside className="w-64 bg-white p-4 shadow-md dark:bg-gray-800">
-        <h2 className="mb-6 text-xl font-bold text-gray-900 dark:text-white">
-          Slooze Admin
-        </h2>
-        <nav>
-          <ul>
-            {user?.role === 'Manager' && (
-              <li className="mb-2">
-                <a href="/dashboard" className="text-blue-600 hover:underline dark:text-blue-400">
-                  Dashboard
-                </a>
-              </li>
-            )}
-            <li className="mb-2">
-              <a href="/products" className="text-blue-600 hover:underline dark:text-blue-400">
-                Products
-              </a>
-            </li>
-            <li className="mb-2">
-              <button
-                onClick={toggleTheme}
-                className="w-full text-left text-gray-600 hover:underline dark:text-gray-300"
-              >
-                Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={logout} // Call logout function
-                className="text-red-600 hover:underline dark:text-red-400"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </nav>
+    <div className="app-shell">
+      {/* Primary sidebar (icon rail) */}
+      <aside className="flex w-16 flex-col items-center border-r border-[var(--border)] bg-[#020617] py-6">
+        <div className="mb-8 flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--primary-soft)] text-xs font-semibold text-[var(--primary)]">
+          SL
+        </div>
+        <div className="flex flex-1 flex-col items-center gap-4 text-[11px] text-[var(--muted)]">
+          {user?.role === 'Manager' && (
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard')}
+              className={`flex h-9 w-9 items-center justify-center rounded-xl text-xs font-medium transition-colors ${
+                pathname === '/dashboard'
+                  ? 'bg-[var(--primary-soft)] text-[var(--primary)]'
+                  : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+              }`}
+            >
+              D
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => router.push('/products')}
+            className={`flex h-9 w-9 items-center justify-center rounded-xl text-xs font-medium transition-colors ${
+              pathname === '/products'
+                ? 'bg-[var(--primary-soft)] text-[var(--primary)]'
+                : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+            }`}
+          >
+            P
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="mt-auto flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] text-[10px] text-[var(--muted)] hover:text-[var(--foreground)]"
+        >
+          {theme === 'light' ? '☾' : '☼'}
+        </button>
       </aside>
 
-      <main className="flex-1 p-6">{children}</main>
+      {/* Secondary sidebar + content */}
+      <aside className="flex w-56 flex-col border-r border-[var(--border)] bg-[var(--card)]/95 px-5 py-6">
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold tracking-tight text-[var(--foreground)]">Slooze</h2>
+          <p className="mt-1 text-xs text-[var(--muted)]">Commodity manager</p>
+        </div>
+
+        <nav className="flex flex-1 flex-col gap-1 text-xs">
+          <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[var(--muted)]">
+            Navigation
+          </p>
+          {user?.role === 'Manager' && navLink('/dashboard', 'Dashboard')}
+          {navLink('/products', 'Products')}
+        </nav>
+
+        <div className="mt-6 border-t border-[var(--border)] pt-4 text-xs">
+          <button
+            type="button"
+            onClick={logout}
+            className="w-full text-left text-[11px] font-medium text-[var(--danger)] hover:opacity-80"
+          >
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <main className="app-shell-main">{children}</main>
     </div>
   );
 }

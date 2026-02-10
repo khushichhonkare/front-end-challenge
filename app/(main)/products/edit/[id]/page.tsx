@@ -78,16 +78,66 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-        Edit Product: {product.name}
-      </h1>
-      <ProductForm
-        initialData={product}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isSubmitting={isSubmitting}
-      />
+    <div className="space-y-5">
+      <header className="flex items-center justify-between">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--muted)]">
+            Store / Product
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold text-[var(--foreground)]">
+            Edit Product
+          </h1>
+        </div>
+      </header>
+
+      <section className="app-page-card grid gap-8 px-6 py-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1.1fr)]">
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-sm font-semibold text-[var(--foreground)]">
+              {product.name}
+            </h2>
+            <p className="mt-1 text-xs text-[var(--muted)]">
+              Update the product details and pricing.
+            </p>
+          </div>
+
+          <ProductForm
+            initialData={product}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+
+        {/* Right column – reuse same visual placeholders as Add page */}
+        <aside className="space-y-6">
+          <div className="space-y-3 rounded-[14px] border border-[var(--border)] bg-[var(--muted-soft)]/60 px-5 py-6">
+            <h3 className="text-sm font-semibold text-[var(--foreground)]">
+              Previews Product
+            </h3>
+            <p className="text-xs text-[var(--muted)]">
+              Design placeholder for primary product preview.
+            </p>
+            <div className="flex min-h-[180px] flex-col items-center justify-center rounded-[12px] border border-dashed border-[var(--border)] bg-[var(--card)]/40 text-center text-xs text-[var(--muted)]">
+              <span className="mb-1 text-2xl">🖼️</span>
+              <p className="font-medium">Drag and drop your image here</p>
+            </div>
+          </div>
+
+          <div className="space-y-3 rounded-[14px] border border-[var(--border)] bg-[var(--muted-soft)]/60 px-5 py-6">
+            <h3 className="text-sm font-semibold text-[var(--foreground)]">
+              Thumbnail Product
+            </h3>
+            <p className="text-xs text-[var(--muted)]">
+              Design placeholder for product thumbnail.
+            </p>
+            <div className="flex min-h-[140px] flex-col items-center justify-center rounded-[12px] border border-dashed border-[var(--border)] bg-[var(--card)]/40 text-center text-xs text-[var(--muted)]">
+              <span className="mb-1 text-xl">⬚</span>
+              <p className="font-medium">Drag and drop your image here</p>
+            </div>
+          </div>
+        </aside>
+      </section>
     </div>
   );
 };
